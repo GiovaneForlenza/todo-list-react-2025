@@ -1,0 +1,32 @@
+@import "./variables.scss";
+
+.header-wrapper {
+  // border: 1px solid #000;
+  width: 100%;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+  .text {
+    // border: 1px solid #000;
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .date {
+      font-size: 14px;
+      color: #00000050;
+    }
+  }
+  .button {
+    // border: 1px solid #000;
+    button {
+      background-color: $secondary-blue;
+      color: $primary-blue;
+      height: 100%;
+      border-radius: 12px;
+      font-weight: 500;
+      padding: 0 24px;
+      border: none;
+    }
+  }
+}

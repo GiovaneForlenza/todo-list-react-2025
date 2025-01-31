@@ -32,9 +32,11 @@ function index() {
     setTasks(tasks.filter((task) => task.id !== id));
   }
   return (
-    <div className="todo-list-wrapper">
-      <div className="title">
-        <h1>Todo-List</h1>
+    <div className="">
+      <div className="header">
+        <div className="title">
+          <h1>Todo-List</h1>
+        </div>
       </div>
       <input
         type="text"

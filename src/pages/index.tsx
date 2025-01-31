@@ -1,11 +1,15 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
-import TodoList from "@/components/TodoList";
+import TodoList from "@/components/Tasks/TaskList";
+import Header from "@/components/Header";
+import FilterList from "@/components/Filters/FilterList";
 
 export default function Home() {
   return (
     <div>
-      <TodoList />
+      <div className="todo-wrapper">
+        <Header />
+        <FilterList />
+        {/* <TodoList /> */}
+      </div>
     </div>
   );
 }
