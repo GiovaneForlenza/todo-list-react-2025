@@ -1,0 +1,33 @@
+@import "../variables.scss";
+
+.filter-item-wrapper {
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  gap: 4px;
+  .number {
+    padding: 3px 8px;
+    border-radius: 50px;
+  }
+  .text {
+    height: fit-content;
+  }
+}
+.filter-item-wrapper.selected .text {
+  color: $primary-blue;
+  font-weight: bold;
+}
+.filter-item-wrapper.selected .number {
+  background-color: $primary-blue;
+  color: #fff;
+}
+.filter-item-wrapper.not-selected .text {
+  color: $dark-gray;
+}
+.filter-item-wrapper.not-selected .number {
+  background-color: $light-gray;
+  color: #fff;
+}

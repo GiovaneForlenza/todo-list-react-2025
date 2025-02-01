@@ -1,5 +1,6 @@
 import "@/styles/main.scss";
-import "@/styles/todo-list.scss";
+import "@/styles/task/list.scss";
+import "@/styles/task/item.scss";
 import "@/styles/header.scss";
 import "@/styles/variables.scss";
 import "@/styles/filter/item.scss";
