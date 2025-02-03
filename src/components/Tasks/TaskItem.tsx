@@ -1,17 +1,16 @@
+import { Task } from "@/contexts/TasksContext";
 import React from "react";
 
-import { Task } from "./TaskList";
 import { FaCheck } from "react-icons/fa";
 
 interface TodoItemProps {
   task: Task;
-  deleteTask: (id: number) => void;
   toggleCompleted: (id: number) => void;
 }
 
 const descriptionLength: number = 40;
 
-function TaskItem({ task, deleteTask, toggleCompleted }: TodoItemProps) {
+function TaskItem({ task,  toggleCompleted }: TodoItemProps) {
   return (
     <div className={`task-item-wrapper ${task.completed ? "completed" : ""}`}>
       <div className="main-wrapper">

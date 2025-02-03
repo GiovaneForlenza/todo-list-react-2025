@@ -3,6 +3,7 @@
 import React, { useContext, useState } from "react";
 import FilterItem from "./FilterItem";
 import { FiltersContext, FiltersContextProps } from "@/contexts/FiltersContext";
+import { TasksContext } from "@/contexts/TasksContext";
 
 export type FilterItemType = {
   id: number;
@@ -22,7 +23,12 @@ function FilterList() {
   // if (!filtersContext) {
   //   return null; // or handle the error appropriately
   // }
-  const { completedTasks, incompleteTasks } = useContext(FiltersContext) as FiltersContextProps;
+
+  const tasksContext = useContext(TasksContext);
+  if (!tasksContext) {
+    return null; // or handle the error appropriately
+  }
+  const { completedTasks, incompleteTasks } = tasksContext;
   const [filters, setFilters] = useState<FilterItemType[]>([
     {
       id: 1,
