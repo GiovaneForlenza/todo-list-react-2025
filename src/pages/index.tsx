@@ -10,11 +10,9 @@ import { ModalContext } from "@/contexts/ModalContext";
 
 export default function Home() {
   return (
-    <div>
       <div className="todo-wrapper">
         <ModalProvider>
           <Header />
-
           <TasksProvider>
             <FiltersProvider>
               <FilterList />
@@ -24,6 +22,5 @@ export default function Home() {
           </TasksProvider>
         </ModalProvider>
       </div>
-    </div>
   );
 }

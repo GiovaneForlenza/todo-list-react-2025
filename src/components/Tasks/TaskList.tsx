@@ -8,14 +8,17 @@ function index() {
 
   return (
     <div className="task-list-wrapper">
-      {tasks ? (
+      {tasks && tasks.length !== 0 ? (
         tasks.map((task, id) => {
           return (
             <TaskItem key={id} task={task} toggleCompleted={toggleCompleted} />
           );
         })
       ) : (
-        <h1>You don't have any tasks</h1>
+        <div className="no-tasks-wrapper">
+          <h1>You don't have any tasks</h1>
+          <h2>Try adding some, click on the button above</h2>
+        </div>
       )}
     </div>
   );

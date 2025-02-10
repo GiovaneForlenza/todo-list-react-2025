@@ -1,10 +1,19 @@
-import React, { createContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useState,
+  ReactNode,
+  useContext,
+  useEffect,
+} from "react";
+import { TasksContext } from "./TasksContext"; // Import TaskContext
 
 export interface FiltersContextProps {
   completedTasks: number;
   setCompletedTasks: React.Dispatch<React.SetStateAction<number>>;
   incompleteTasks: number;
   setIncompleteTasks: React.Dispatch<React.SetStateAction<number>>;
+  totalOfTasks: number;
+  setTotalOfTasks: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const FiltersContext = createContext<FiltersContextProps | null>(null);
@@ -18,6 +27,35 @@ export const FiltersProvider: React.FC<FiltersProviderProps> = ({
 }) => {
   const [completedTasks, setCompletedTasks] = useState<number>(0);
   const [incompleteTasks, setIncompleteTasks] = useState<number>(0);
+  const [totalOfTasks, setTotalOfTasks] = useState<number>(0);
+
+  const { tasks } = useContext(TasksContext) || {};
+
+  useEffect(() => {
+    resetFilters();
+    countTasks();
+  }, [tasks]);
+  function resetFilters() {
+    setCompletedTasks(0);
+    setIncompleteTasks(0);
+    setTotalOfTasks(0);
+  }
+  function countTasks() {
+    if (tasks) {
+      // console.log(tasks);
+      tasks.map((task) => {
+        console.log(task.completed);
+
+        if (task.completed) {
+          setCompletedTasks(completedTasks + 1);
+        } else {
+          setIncompleteTasks(incompleteTasks + 1);
+        }
+        setTotalOfTasks(totalOfTasks + 1);
+      });
+    }
+    console.log(completedTasks, incompleteTasks, totalOfTasks);
+  }
 
   return (
     <FiltersContext.Provider
@@ -26,6 +64,8 @@ export const FiltersProvider: React.FC<FiltersProviderProps> = ({
         setCompletedTasks,
         incompleteTasks,
         setIncompleteTasks,
+        totalOfTasks,
+        setTotalOfTasks,
       }}
     >
       {children}

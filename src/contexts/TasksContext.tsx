@@ -50,12 +50,7 @@ const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     let tasksFromLocalStorage = getTasksFromLocalStorage();
 
     setTasks(tasksFromLocalStorage);
-    // if (tasksFromLocalStorage) {
-    // } else {
-    //   setTasks([]);
-    // }
   }, []);
-  console.log(tasks[0]);
 
   return (
     <TasksContext.Provider

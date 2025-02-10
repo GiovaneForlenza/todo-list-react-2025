@@ -23,6 +23,7 @@ const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       modalElement.classList.add("show");
       modalElement.classList.remove("hide");
     }
+    document.body.style.overflow = "hidden";
   };
 
   const closeModal = () => {
@@ -33,6 +34,7 @@ const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       modalElement.classList.add("hide");
       modalElement.classList.remove("show");
     }
+    document.body.style.overflow = "visible";
   };
 
   return (
