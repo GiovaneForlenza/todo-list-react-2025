@@ -1,26 +1,35 @@
-import { useEffect } from "react";
+import { Task, TasksContext } from "@/contexts/TasksContext";
+import { useContext, useEffect, useState } from "react";
 
-export function addTaskToLocalStorage(key: string, value: unknown) {
-  let tasksInLocalStorage = getTasksFromLocalStorage();
-  if (tasksInLocalStorage) {
-    tasksInLocalStorage.push(value);
+export function addTaskToLocalStorage(key: string, value: Task) {
+  let returnedTasks = getTasksFromLocalStorage();
+  if (returnedTasks) {
+    returnedTasks.push(value);
   } else {
-    tasksInLocalStorage = value;
+    returnedTasks = [value];
   }
 
-  // console.log(value);
-
   try {
-    window.localStorage.setItem(key, JSON.stringify(tasksInLocalStorage));
+    window.localStorage.setItem(key, JSON.stringify(returnedTasks));
   } catch (error) {
     console.log(error);
   }
 }
 
+export function getLastUsedId(): number {
+  let lastUsedId = 0;
+  let tasks = getTasksFromLocalStorage();
+  tasks &&
+    tasks.forEach((task: { id: number }) => {
+      if (task.id > lastUsedId) lastUsedId = task.id;
+    });
+  return lastUsedId;
+}
+
 export function getTasksFromLocalStorage() {
   try {
     const item = window.localStorage.getItem("tasks");
-    return item ? JSON.parse(item) : null;
+    return item ? JSON.parse(item) : [];
   } catch (error) {
     console.log(error);
   }

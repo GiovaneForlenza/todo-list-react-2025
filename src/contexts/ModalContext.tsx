@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 export type modalTypes = "add" | "edit" | "delete";
 
 interface ModalContextProps {
-  isOpen: boolean;
+  isModalOpen: boolean;
   modalType: modalTypes | null;
   openModal: (type: modalTypes) => void;
   closeModal: () => void;
@@ -12,12 +12,12 @@ interface ModalContextProps {
 const ModalContext = createContext<ModalContextProps | null>(null);
 
 const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<modalTypes | null>(null);
 
   const openModal = (type: modalTypes) => {
     setModalType(type);
-    setIsOpen(true);
+    setIsModalOpen(true);
     const modalElement = document.getElementById("modal-wrapper");
     if (modalElement) {
       modalElement.classList.add("show");
@@ -26,7 +26,7 @@ const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   const closeModal = () => {
-    setIsOpen(false);
+    setIsModalOpen(false);
     setModalType(null);
     const modalElement = document.getElementById("modal-wrapper");
     if (modalElement) {
@@ -36,7 +36,9 @@ const ModalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <ModalContext.Provider value={{ isOpen, modalType, openModal, closeModal }}>
+    <ModalContext.Provider
+      value={{ isModalOpen, modalType, openModal, closeModal }}
+    >
       {children}
     </ModalContext.Provider>
   );

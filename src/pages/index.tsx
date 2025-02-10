@@ -5,6 +5,8 @@ import { FiltersProvider } from "@/contexts/FiltersContext";
 import { TasksProvider } from "@/contexts/TasksContext";
 import { ModalProvider } from "@/contexts/ModalContext";
 import Modal from "@/components/Modal/Modal";
+import { useContext } from "react";
+import { ModalContext } from "@/contexts/ModalContext";
 
 export default function Home() {
   return (
@@ -12,6 +14,7 @@ export default function Home() {
       <div className="todo-wrapper">
         <ModalProvider>
           <Header />
+
           <TasksProvider>
             <FiltersProvider>
               <FilterList />

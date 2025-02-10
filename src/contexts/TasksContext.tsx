@@ -2,6 +2,7 @@ import {
   getTasksFromLocalStorage,
   initialTasksForLocalStorage,
 } from "@/utils/localStorage";
+import { log } from "console";
 import React, { createContext, useState, ReactNode, useEffect } from "react";
 
 export interface Task {
@@ -18,6 +19,10 @@ interface TasksContextProps {
   toggleCompleted: (id: number) => void;
   completedTasks: number;
   incompleteTasks: number;
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  updateTaskList: () => void;
+  lastUsedId: number;
+  setLastUsedId: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const TasksContext = createContext<TasksContextProps | undefined>(undefined);
@@ -25,6 +30,7 @@ const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [completedTasks, setCompletedTasks] = useState(0);
   const [incompleteTasks, setIncompleteTasks] = useState(0);
+  const [lastUsedId, setLastUsedId] = useState(0);
 
   function toggleCompleted(id: number) {
     const updatedTasks = tasks.map((task) => {
@@ -36,35 +42,32 @@ const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setTasks(updatedTasks);
   }
 
-  function countCompleteAndIncompleteTasks() {
-    let completedCount = 0;
-    let incompleteCount = 0;
-
-    tasks.forEach((task) => {
-      if (task.completed) {
-        completedCount++;
-      } else {
-        incompleteCount++;
-      }
-    });
-
-    setCompletedTasks(completedCount);
-    setIncompleteTasks(incompleteCount);
+  function updateTaskList() {
+    setTasks(getTasksFromLocalStorage());
   }
 
   useEffect(() => {
-    setTasks(getTasksFromLocalStorage());
-  }, []);
+    let tasksFromLocalStorage = getTasksFromLocalStorage();
 
-  console.log(tasks);
+    setTasks(tasksFromLocalStorage);
+    // if (tasksFromLocalStorage) {
+    // } else {
+    //   setTasks([]);
+    // }
+  }, []);
+  console.log(tasks[0]);
 
   return (
     <TasksContext.Provider
       value={{
         tasks,
         toggleCompleted,
-        completedTasks,
+        setTasks,
         incompleteTasks,
+        updateTaskList,
+        completedTasks,
+        lastUsedId,
+        setLastUsedId,
       }}
     >
       {children}

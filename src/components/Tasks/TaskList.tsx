@@ -9,13 +9,9 @@ function index() {
   return (
     <div className="task-list-wrapper">
       {tasks ? (
-        tasks.map((task) => {
+        tasks.map((task, id) => {
           return (
-            <TaskItem
-              key={task.id}
-              task={task}
-              toggleCompleted={toggleCompleted}
-            />
+            <TaskItem key={id} task={task} toggleCompleted={toggleCompleted} />
           );
         })
       ) : (

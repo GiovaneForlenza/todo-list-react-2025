@@ -17,7 +17,7 @@ function TaskItem({ task,  toggleCompleted }: TodoItemProps) {
         <div className="left">
           <div className="title">{task.title}</div>
           <div className="description">
-            {task.description.slice(0, descriptionLength) +
+            {task.description && task.description.slice(0, descriptionLength) +
               (task.description.length > descriptionLength ? "..." : "")}
           </div>
         </div>
