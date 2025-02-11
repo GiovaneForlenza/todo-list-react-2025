@@ -17,7 +17,7 @@ function index() {
       ) : (
         <div className="no-tasks-wrapper">
           <h1>You don't have any tasks</h1>
-          <h2>Try adding some, click on the button above</h2>
+          <h2>To add a new task, click on the button above</h2>
         </div>
       )}
     </div>

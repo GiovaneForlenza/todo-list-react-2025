@@ -15,6 +15,11 @@ function Modal() {
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
 
+  function resetModalText() {
+    setTaskTitle("");
+    setTaskDescription("");
+  }
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     addTaskToLocalStorage({
@@ -27,6 +32,7 @@ function Modal() {
     });
     updateTaskList && updateTaskList();
     getLastUsedId();
+    resetModalText();
     closeModal();
   }
   return (
@@ -51,7 +57,10 @@ function Modal() {
                 <div className="form-line">
                   <div className="title">
                     Task Title*
-                    <span className="modal-form-span required"> (required)</span>
+                    <span className="modal-form-span required">
+                      {" "}
+                      (required)
+                    </span>
                   </div>
                   <div className="input">
                     <input
