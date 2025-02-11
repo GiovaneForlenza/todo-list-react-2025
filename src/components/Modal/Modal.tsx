@@ -12,9 +12,23 @@ function Modal() {
 
   const { updateTaskList } = useContext(TasksContext) || {};
 
-  const [taskTitle, setTaskTitle] = useState("Title");
-  const [taskDescription, setTaskDescription] = useState("Description");
-  const [taskId, setTaskId] = useState("");
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+    e.preventDefault();
+    addTaskToLocalStorage({
+      id: getLastUsedId() + 1,
+      title: taskTitle,
+      description: taskDescription,
+      completed: false,
+      // date: "Today",
+      // time: "10:00",
+    });
+    updateTaskList && updateTaskList();
+    getLastUsedId();
+    closeModal();
+  }
   return (
     <>
       {isModalOpen && (
@@ -33,9 +47,12 @@ function Modal() {
               </div>
             </div>
             <div className="body-wrapper">
-              <div className="form-wrapper">
+              <form className="form-wrapper" onSubmit={(e) => handleSubmit(e)}>
                 <div className="form-line">
-                  <div className="title">Task Title</div>
+                  <div className="title">
+                    Task Title*
+                    <span className="modal-form-span required"> (required)</span>
+                  </div>
                   <div className="input">
                     <input
                       type="text"
@@ -43,11 +60,15 @@ function Modal() {
                       id=""
                       placeholder="Task title"
                       onChange={(e) => setTaskTitle(e.target.value)}
+                      required
                     />
                   </div>
                 </div>
                 <div className="form-line">
-                  <div className="title">Task description</div>
+                  <div className="title">
+                    Task description
+                    <span className="modal-form-span"> (optional)</span>
+                  </div>
                   <div className="input">
                     <textarea
                       name=""
@@ -57,25 +78,10 @@ function Modal() {
                     />
                   </div>
                 </div>
-              </div>
-              <div
-                className="primary-button"
-                onClick={() => {
-                  addTaskToLocalStorage({
-                    id: getLastUsedId() + 1,
-                    title: taskTitle,
-                    description: taskDescription,
-                    completed: false,
-                    // date: "Today",
-                    // time: "10:00",
-                  });
-                  updateTaskList && updateTaskList();
-                  getLastUsedId();
-                  closeModal();
-                }}
-              >
-                <button>+ Add task</button>
-              </div>
+                <button className="primary-button" type="submit">
+                  + Add task
+                </button>
+              </form>
             </div>
           </div>
         </div>

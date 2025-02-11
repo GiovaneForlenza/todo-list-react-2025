@@ -11,9 +11,9 @@ function Header() {
         <div className="title">Your tasks</div>
         <div className="date">Wednesday, 31 Jan</div>
       </div>
-      <div className="primary-button" onClick={() => openModal("add")}>
-        <button>+ Add task</button>
-      </div>
+      <button className="primary-button" onClick={() => openModal("add")}>
+        + Add task
+      </button>
     </div>
   );
 }

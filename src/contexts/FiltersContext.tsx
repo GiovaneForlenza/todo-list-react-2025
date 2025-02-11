@@ -1,21 +1,23 @@
+import { getFilterCount, LOCAL_STORAGE_KEYS } from "@/utils/localStorage";
 import React, {
   createContext,
   useState,
   ReactNode,
-  useContext,
   useEffect,
+  useContext,
 } from "react";
-import { TasksContext } from "./TasksContext"; // Import TaskContext
+import { TasksContext } from "./TasksContext";
 
+export type FilterItemType = {
+  id: number;
+  text: "All" | "Incomplete" | "Completed";
+  selected: boolean;
+  numberOfTasks: number;
+};
 export interface FiltersContextProps {
-  completedTasks: number;
-  setCompletedTasks: React.Dispatch<React.SetStateAction<number>>;
-  incompleteTasks: number;
-  setIncompleteTasks: React.Dispatch<React.SetStateAction<number>>;
-  totalOfTasks: number;
-  setTotalOfTasks: React.Dispatch<React.SetStateAction<number>>;
+  filters: FilterItemType[];
+  setFilters: React.Dispatch<React.SetStateAction<FilterItemType[]>>;
 }
-
 export const FiltersContext = createContext<FiltersContextProps | null>(null);
 
 interface FiltersProviderProps {
@@ -25,47 +27,67 @@ interface FiltersProviderProps {
 export const FiltersProvider: React.FC<FiltersProviderProps> = ({
   children,
 }) => {
-  const [completedTasks, setCompletedTasks] = useState<number>(0);
-  const [incompleteTasks, setIncompleteTasks] = useState<number>(0);
-  const [totalOfTasks, setTotalOfTasks] = useState<number>(0);
+  const tasksContext = useContext(TasksContext);
+  if (!tasksContext) {
+    throw new Error("TasksContext must be used within a TasksProvider");
+  }
+  const { tasks } = tasksContext;
 
-  const { tasks } = useContext(TasksContext) || {};
+  const [filters, setFilters] = useState<FilterItemType[]>([
+    {
+      id: 0,
+      text: "All",
+      selected: true,
+      numberOfTasks: getFilterCount(LOCAL_STORAGE_KEYS.TOTAL_OF_TASKS),
+    },
+    {
+      id: 1,
+      text: "Incomplete",
+      selected: false,
+      numberOfTasks: getFilterCount(LOCAL_STORAGE_KEYS.INCOMPLETE_TASKS),
+    },
+    {
+      id: 2,
+      text: "Completed",
+      selected: false,
+      numberOfTasks: getFilterCount(LOCAL_STORAGE_KEYS.COMPLETED_TASKS),
+    },
+  ]);
 
+  function updateFiltersCounter() {
+    const updatedFilters = filters.map((filter) => {
+      if (filter.id === 0) {
+        return {
+          ...filter,
+          numberOfTasks: getFilterCount(LOCAL_STORAGE_KEYS.TOTAL_OF_TASKS),
+        };
+      } else if (filter.id === 1) {
+        return {
+          ...filter,
+          numberOfTasks: getFilterCount(LOCAL_STORAGE_KEYS.INCOMPLETE_TASKS),
+        };
+      } else if (filter.id === 2) {
+        return {
+          ...filter,
+          numberOfTasks: getFilterCount(LOCAL_STORAGE_KEYS.COMPLETED_TASKS),
+        };
+      } else {
+        return filter;
+      }
+    });
+    setFilters(updatedFilters);
+  }
+
+  
   useEffect(() => {
-    resetFilters();
-    countTasks();
+    updateFiltersCounter();
   }, [tasks]);
-  function resetFilters() {
-    setCompletedTasks(0);
-    setIncompleteTasks(0);
-    setTotalOfTasks(0);
-  }
-  function countTasks() {
-    if (tasks) {
-      // console.log(tasks);
-      tasks.map((task) => {
-        console.log(task.completed);
-
-        if (task.completed) {
-          setCompletedTasks(completedTasks + 1);
-        } else {
-          setIncompleteTasks(incompleteTasks + 1);
-        }
-        setTotalOfTasks(totalOfTasks + 1);
-      });
-    }
-    console.log(completedTasks, incompleteTasks, totalOfTasks);
-  }
 
   return (
     <FiltersContext.Provider
       value={{
-        completedTasks,
-        setCompletedTasks,
-        incompleteTasks,
-        setIncompleteTasks,
-        totalOfTasks,
-        setTotalOfTasks,
+        filters,
+        setFilters,
       }}
     >
       {children}

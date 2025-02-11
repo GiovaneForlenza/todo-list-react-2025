@@ -23,6 +23,7 @@ export interface TasksContextProps {
   updateTaskList: () => void;
   lastUsedId: number;
   setLastUsedId: React.Dispatch<React.SetStateAction<number>>;
+  updateDisplayedTaskList: (filter: string) => void;
 }
 
 const TasksContext = createContext<TasksContextProps | undefined>(undefined);
@@ -52,6 +53,28 @@ const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     setTasks(getTasksFromLocalStorage());
   }
 
+  function updateDisplayedTaskList(filter: string) {
+    updateTaskList();
+    console.log(filter);
+
+    if (filter === "All") {
+      setTasks(getTasksFromLocalStorage());
+      return;
+    }
+    const fullTaskList = getTasksFromLocalStorage();
+    const displayedTaskList: Task[] = fullTaskList.filter(
+      (task: Task): Task | undefined => {
+        if (filter === "Completed") {
+          if (task.completed) return task;
+        } else if (filter === "Incomplete") {
+          if (!task.completed) return task;
+        }
+      }
+    );
+    console.log(displayedTaskList);
+
+    setTasks(displayedTaskList);
+  }
   useEffect(() => {
     let tasksFromLocalStorage = getTasksFromLocalStorage();
 
@@ -67,6 +90,7 @@ const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         updateTaskList,
         lastUsedId,
         setLastUsedId,
+        updateDisplayedTaskList,
       }}
     >
       {children}

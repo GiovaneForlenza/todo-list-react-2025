@@ -10,16 +10,19 @@ interface TodoItemProps {
 
 const descriptionLength: number = 40;
 
-function TaskItem({ task,  toggleCompleted }: TodoItemProps) {
+function TaskItem({ task, toggleCompleted }: TodoItemProps) {
   return (
     <div className={`task-item-wrapper ${task.completed ? "completed" : ""}`}>
       <div className="main-wrapper">
         <div className="left">
           <div className="title">{task.title}</div>
-          <div className="description">
-            {task.description && task.description.slice(0, descriptionLength) +
-              (task.description.length > descriptionLength ? "..." : "")}
-          </div>
+          {task.description && (
+            <div className="description">
+              {task.description &&
+                task.description.slice(0, descriptionLength) +
+                  (task.description.length > descriptionLength ? "..." : "")}
+            </div>
+          )}
         </div>
         <div className="right">
           <div className={`radio-btn`} onClick={() => toggleCompleted(task.id)}>

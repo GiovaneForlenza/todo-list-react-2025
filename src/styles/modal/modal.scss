@@ -73,6 +73,12 @@
             color: $dark-gray;
             margin-bottom: 4px;
           }
+          .modal-form-span {
+            font-size: 12px;
+            &.required {
+              color: red;
+            }
+          }
           .input {
             width: 100%;
             input,

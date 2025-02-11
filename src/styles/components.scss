@@ -1,14 +1,12 @@
 @import "./variables.scss";
 
 .primary-button {
-  button {
-    background-color: $secondary-blue;
-    color: $primary-blue;
-    height: 50px;
-    border-radius: 12px;
-    font-weight: 500;
-    padding: 0 24px;
-    border: none;
-    cursor: pointer;
-  }
+  background-color: $secondary-blue;
+  color: $primary-blue;
+  height: 50px;
+  border-radius: 12px;
+  font-weight: 500;
+  padding: 0 24px;
+  border: none;
+  cursor: pointer;
 }
