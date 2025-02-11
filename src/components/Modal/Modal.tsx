@@ -61,7 +61,7 @@ function Modal() {
               <div
                 className="primary-button"
                 onClick={() => {
-                  addTaskToLocalStorage("tasks", {
+                  addTaskToLocalStorage({
                     id: getLastUsedId() + 1,
                     title: taskTitle,
                     description: taskDescription,

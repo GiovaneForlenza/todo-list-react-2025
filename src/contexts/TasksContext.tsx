@@ -1,8 +1,10 @@
 import {
+  decreaseFilterCount,
   getTasksFromLocalStorage,
-  initialTasksForLocalStorage,
+  increaseFilterCount,
+  LOCAL_STORAGE_KEYS,
+  updateTasksInLocalStorage,
 } from "@/utils/localStorage";
-import { log } from "console";
 import React, { createContext, useState, ReactNode, useEffect } from "react";
 
 export interface Task {
@@ -14,11 +16,9 @@ export interface Task {
   completed: boolean;
 }
 
-interface TasksContextProps {
+export interface TasksContextProps {
   tasks: Task[];
   toggleCompleted: (id: number) => void;
-  completedTasks: number;
-  incompleteTasks: number;
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
   updateTaskList: () => void;
   lastUsedId: number;
@@ -28,18 +28,24 @@ interface TasksContextProps {
 const TasksContext = createContext<TasksContextProps | undefined>(undefined);
 const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [completedTasks, setCompletedTasks] = useState(0);
-  const [incompleteTasks, setIncompleteTasks] = useState(0);
   const [lastUsedId, setLastUsedId] = useState(0);
 
   function toggleCompleted(id: number) {
     const updatedTasks = tasks.map((task) => {
       if (task.id === id) {
+        if (!task.completed) {
+          increaseFilterCount(LOCAL_STORAGE_KEYS.COMPLETED_TASKS);
+          decreaseFilterCount(LOCAL_STORAGE_KEYS.INCOMPLETE_TASKS);
+        } else {
+          increaseFilterCount(LOCAL_STORAGE_KEYS.INCOMPLETE_TASKS);
+          decreaseFilterCount(LOCAL_STORAGE_KEYS.COMPLETED_TASKS);
+        }
         return { ...task, completed: !task.completed };
       }
       return task;
     });
     setTasks(updatedTasks);
+    updateTasksInLocalStorage(updatedTasks);
   }
 
   function updateTaskList() {
@@ -58,9 +64,7 @@ const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         tasks,
         toggleCompleted,
         setTasks,
-        incompleteTasks,
         updateTaskList,
-        completedTasks,
         lastUsedId,
         setLastUsedId,
       }}

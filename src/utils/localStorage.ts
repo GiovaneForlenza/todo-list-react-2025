@@ -1,8 +1,19 @@
 import { Task, TasksContext } from "@/contexts/TasksContext";
 import { useContext, useEffect, useState } from "react";
 
-export function addTaskToLocalStorage(key: string, value: Task) {
+export const LOCAL_STORAGE_KEYS = {
+  TASKS: "tasks",
+  COMPLETED_TASKS: "completed_tasks",
+  INCOMPLETE_TASKS: "incomplete_tasks",
+  TOTAL_OF_TASKS: "total_of_tasks",
+};
+
+export function addTaskToLocalStorage(value: Task) {
   let returnedTasks = getTasksFromLocalStorage();
+
+  let totalOfTasks = getFilterCount(LOCAL_STORAGE_KEYS.TOTAL_OF_TASKS);
+  let incomplete_tasks = getFilterCount(LOCAL_STORAGE_KEYS.INCOMPLETE_TASKS);
+
   if (returnedTasks) {
     returnedTasks.push(value);
   } else {
@@ -10,10 +21,50 @@ export function addTaskToLocalStorage(key: string, value: Task) {
   }
 
   try {
-    window.localStorage.setItem(key, JSON.stringify(returnedTasks));
+    if (!getFilterCount(LOCAL_STORAGE_KEYS.COMPLETED_TASKS))
+      window.localStorage.setItem(
+        LOCAL_STORAGE_KEYS.COMPLETED_TASKS,
+        JSON.stringify(0)
+      );
+
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.TASKS,
+      JSON.stringify(returnedTasks)
+    );
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.INCOMPLETE_TASKS,
+      JSON.stringify(incomplete_tasks + 1)
+    );
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.TOTAL_OF_TASKS,
+      JSON.stringify(totalOfTasks + 1)
+    );
   } catch (error) {
     console.log(error);
   }
+}
+
+export function getFilterCount(filter: string): number {
+  try {
+    let filterCounter = window.localStorage.getItem(filter);
+    return filterCounter ? parseInt(filterCounter) : 0;
+    
+  } catch (error) {
+    
+  }
+  return 0
+}
+
+export function increaseFilterCount(filter: string) {
+  let filterCount = getFilterCount(filter);
+  if (!filterCount) filterCount = 0;
+  window.localStorage.setItem(filter, JSON.stringify(filterCount + 1));
+}
+
+export function decreaseFilterCount(filter: string) {
+  let filterCount = getFilterCount(filter);
+  if (!filterCount) filterCount = 0;
+  window.localStorage.setItem(filter, JSON.stringify(filterCount - 1));
 }
 
 export function getLastUsedId(): number {
@@ -28,11 +79,18 @@ export function getLastUsedId(): number {
 
 export function getTasksFromLocalStorage() {
   try {
-    const item = window.localStorage.getItem("tasks");
+    const item = window.localStorage.getItem(LOCAL_STORAGE_KEYS.TASKS);
     return item ? JSON.parse(item) : [];
   } catch (error) {
     console.log(error);
   }
+}
+
+export function updateTasksInLocalStorage(updatedTasks:Task[]) {
+  window.localStorage.setItem(
+    LOCAL_STORAGE_KEYS.TASKS,
+    JSON.stringify(updatedTasks)
+  );
 }
 
 export const initialTasksForLocalStorage = [
