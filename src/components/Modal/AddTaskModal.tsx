@@ -6,12 +6,14 @@ interface AddTaskModalProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   setTaskTitle: (title: string) => void;
   setTaskDescription: (description: string) => void;
+  updateTaskListAndCloseModal: () => void;
 }
 
 function AddTaskModal({
   handleSubmit,
   setTaskTitle,
   setTaskDescription,
+  updateTaskListAndCloseModal,
 }: AddTaskModalProps) {
   const { closeModal } = useContext(ModalContext) || {
     closeModal: () => {},
@@ -44,6 +46,7 @@ function AddTaskModal({
                 placeholder="Task title"
                 onChange={(e) => setTaskTitle(e.target.value)}
                 required
+                autoFocus
               />
             </div>
           </div>
@@ -63,6 +66,13 @@ function AddTaskModal({
           </div>
           <button className="primary-button" type="submit">
             + Add task
+          </button>
+          <button
+            className="outlined-button"
+            type="button"
+            onClick={updateTaskListAndCloseModal}
+          >
+            Cancel
           </button>
         </form>
       </div>

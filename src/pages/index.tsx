@@ -10,17 +10,17 @@ import { ModalContext } from "@/contexts/ModalContext";
 
 export default function Home() {
   return (
-      <div className="todo-wrapper">
-        <ModalProvider>
-          <Header />
-          <TasksProvider>
-            <FiltersProvider>
-              <FilterList />
-            </FiltersProvider>
+    <div className="todo-wrapper">
+      <ModalProvider>
+        <Header />
+        <TasksProvider>
+          <FiltersProvider>
+            <FilterList />
             <TaskList />
             <Modal />
-          </TasksProvider>
-        </ModalProvider>
-      </div>
+          </FiltersProvider>
+        </TasksProvider>
+      </ModalProvider>
+    </div>
   );
 }

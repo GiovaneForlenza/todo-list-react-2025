@@ -2,8 +2,10 @@ import { ModalContext, modalTypes } from "@/contexts/ModalContext";
 import { Task, TasksContext } from "@/contexts/TasksContext";
 import {
   addTaskToLocalStorage,
+  decreaseFilterCount,
   getLastUsedId,
   getTasksFromLocalStorage,
+  LOCAL_STORAGE_KEYS,
   updateTasksInLocalStorage,
 } from "@/utils/localStorage";
 import { useContext, useEffect, useId, useState } from "react";
@@ -11,6 +13,7 @@ import AddTaskModal from "./AddTaskModal";
 import EditTaskModal from "./EditTaskModal";
 import { TbBasketUp } from "react-icons/tb";
 import ConfirmDeleteTaskModal from "./ConfirmDeletetaskModal";
+import { FiltersContext } from "@/contexts/FiltersContext";
 // v4();
 
 function Modal() {
@@ -19,6 +22,9 @@ function Modal() {
   };
 
   const { updateTaskList } = useContext(TasksContext) || {};
+  const { updateFiltersCounter } = useContext(FiltersContext) || {
+    updateFiltersCounter: () => {},
+  };
 
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
@@ -66,6 +72,16 @@ function Modal() {
     const updatedTasks = tasksInLocalStorage.filter(
       (task: Task) => task.id !== taskId
     );
+    tasksInLocalStorage.map((task: Task) => {
+      if (task.id === taskId) {
+        if (task.completed) {
+          decreaseFilterCount(LOCAL_STORAGE_KEYS.COMPLETED_TASKS);
+        } else {
+          decreaseFilterCount(LOCAL_STORAGE_KEYS.INCOMPLETE_TASKS);
+        }
+      }
+    });
+    decreaseFilterCount(LOCAL_STORAGE_KEYS.TOTAL_OF_TASKS);
     updateTasksInLocalStorage(updatedTasks);
     updateTaskListAndCloseModal();
   }
@@ -76,6 +92,7 @@ function Modal() {
     getLastUsedId();
     resetModalText();
     closeModal();
+    updateFiltersCounter();
   }
   return (
     <>
@@ -87,6 +104,7 @@ function Modal() {
               handleSubmit={handleSubmitAdd}
               setTaskTitle={setTaskTitle}
               setTaskDescription={setTaskDescription}
+              updateTaskListAndCloseModal={updateTaskListAndCloseModal}
             />
           ) : !confirmDeleteSelected ? (
             <EditTaskModal
