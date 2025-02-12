@@ -1,12 +1,35 @@
 @import "./variables.scss";
 
-.primary-button {
-  background-color: $secondary-blue;
-  color: $primary-blue;
+.primary-button,
+.delete-button-filled,
+.delete-button-outlined,
+.outlined-button {
   height: 50px;
   border-radius: 12px;
   font-weight: 500;
   padding: 0 24px;
-  border: none;
   cursor: pointer;
+  width: 100%;
+}
+
+.primary-button {
+  background-color: $secondary-blue;
+  color: $primary-blue;
+  border: none;
+}
+
+.delete-button-outlined {
+  background-color: white;
+  color: $delete-red-primary;
+  border: 1px $delete-red-primary solid;
+}
+.delete-button-filled {
+  color: $delete-red-primary;
+  border: none;
+  background-color: $delete-red-secondary;
+}
+.outlined-button {
+  color: black;
+  background-color: white;
+  border: 1px black solid;
 }

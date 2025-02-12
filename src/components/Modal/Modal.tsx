@@ -1,12 +1,20 @@
 import { ModalContext, modalTypes } from "@/contexts/ModalContext";
-import { TasksContext } from "@/contexts/TasksContext";
-import { addTaskToLocalStorage, getLastUsedId } from "@/utils/localStorage";
+import { Task, TasksContext } from "@/contexts/TasksContext";
+import {
+  addTaskToLocalStorage,
+  getLastUsedId,
+  getTasksFromLocalStorage,
+  updateTasksInLocalStorage,
+} from "@/utils/localStorage";
 import { useContext, useEffect, useId, useState } from "react";
-import { IoIosClose } from "react-icons/io";
+import AddTaskModal from "./AddTaskModal";
+import EditTaskModal from "./EditTaskModal";
+import { TbBasketUp } from "react-icons/tb";
+import ConfirmDeleteTaskModal from "./ConfirmDeletetaskModal";
 // v4();
 
 function Modal() {
-  const { closeModal, isModalOpen } = useContext(ModalContext) || {
+  const { closeModal, isModalOpen, modalType } = useContext(ModalContext) || {
     closeModal: () => {},
   };
 
@@ -14,13 +22,14 @@ function Modal() {
 
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
+  const [confirmDeleteSelected, setConfirmDeleteSelected] = useState(false);
 
   function resetModalText() {
     setTaskTitle("");
     setTaskDescription("");
   }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+  function handleSubmitAdd(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     addTaskToLocalStorage({
       id: getLastUsedId() + 1,
@@ -30,7 +39,40 @@ function Modal() {
       // date: "Today",
       // time: "10:00",
     });
+    updateTaskListAndCloseModal();
+  }
+  function handleSubmitEdit(
+    e: React.FormEvent<HTMLFormElement>,
+    taskId: number
+  ): void {
+    e.preventDefault();
+    let tasksInLocalStorage = getTasksFromLocalStorage();
+    const updatedTasks = tasksInLocalStorage.map((task: Task) => {
+      if (task.id === taskId) {
+        return { ...task, title: taskTitle, description: taskDescription };
+      } else {
+        return task;
+      }
+    });
+    updateTasksInLocalStorage(updatedTasks);
+    updateTaskListAndCloseModal();
+  }
+  function handleClickDelete(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    taskId: number
+  ): void {
+    e.preventDefault();
+    const tasksInLocalStorage = getTasksFromLocalStorage();
+    const updatedTasks = tasksInLocalStorage.filter(
+      (task: Task) => task.id !== taskId
+    );
+    updateTasksInLocalStorage(updatedTasks);
+    updateTaskListAndCloseModal();
+  }
+
+  function updateTaskListAndCloseModal() {
     updateTaskList && updateTaskList();
+    setConfirmDeleteSelected(false);
     getLastUsedId();
     resetModalText();
     closeModal();
@@ -40,59 +82,34 @@ function Modal() {
       {isModalOpen && (
         <div className="modal-background-wrapper" id="modal-wrapper">
           <div className="modal-background"></div>
-          <div className="modal-wrapper">
-            <div className="header-wrapper">
-              <div className="left">
-                <div className="title">Add a new task</div>
-                <div className="date-and-time">Today, Wednesday 30 Jan</div>
-              </div>
-              <div className="right">
-                <div className="close" onClick={() => closeModal()}>
-                  <IoIosClose />
-                </div>
-              </div>
-            </div>
-            <div className="body-wrapper">
-              <form className="form-wrapper" onSubmit={(e) => handleSubmit(e)}>
-                <div className="form-line">
-                  <div className="title">
-                    Task Title*
-                    <span className="modal-form-span required">
-                      {" "}
-                      (required)
-                    </span>
-                  </div>
-                  <div className="input">
-                    <input
-                      type="text"
-                      name=""
-                      id=""
-                      placeholder="Task title"
-                      onChange={(e) => setTaskTitle(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-                <div className="form-line">
-                  <div className="title">
-                    Task description
-                    <span className="modal-form-span"> (optional)</span>
-                  </div>
-                  <div className="input">
-                    <textarea
-                      name=""
-                      id=""
-                      placeholder="Task title"
-                      onChange={(e) => setTaskDescription(e.target.value)}
-                    />
-                  </div>
-                </div>
-                <button className="primary-button" type="submit">
-                  + Add task
-                </button>
-              </form>
-            </div>
-          </div>
+          {modalType === "add" ? (
+            <AddTaskModal
+              handleSubmit={handleSubmitAdd}
+              setTaskTitle={setTaskTitle}
+              setTaskDescription={setTaskDescription}
+            />
+          ) : !confirmDeleteSelected ? (
+            <EditTaskModal
+              handleSubmit={handleSubmitEdit}
+              handleClickDelete={handleClickDelete}
+              setTaskTitle={setTaskTitle}
+              setTaskDescription={setTaskDescription}
+              taskTitle={taskTitle}
+              taskDescription={taskDescription}
+              setConfirmDeletedSelected={setConfirmDeleteSelected}
+            />
+          ) : (
+            <ConfirmDeleteTaskModal
+              handleClickDelete={handleClickDelete}
+              setTaskTitle={setTaskTitle}
+              setTaskDescription={setTaskDescription}
+              taskTitle={taskTitle}
+              // taskDescription={taskDescription}
+              confirmDeleteSelected={confirmDeleteSelected}
+              setConfirmDeletedSelected={setConfirmDeleteSelected}
+              updateTaskListAndCloseModal={updateTaskListAndCloseModal}
+            />
+          )}
         </div>
       )}
     </>

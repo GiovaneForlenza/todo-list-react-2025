@@ -4,6 +4,7 @@ import React, { useContext } from "react";
 function Header() {
   const { openModal } = useContext(ModalContext) || {
     openModal: (type: modalTypes) => {},
+    
   };
   return (
     <div className="header-wrapper">

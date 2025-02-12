@@ -1,5 +1,6 @@
+import { ModalContext, modalTypes } from "@/contexts/ModalContext";
 import { Task } from "@/contexts/TasksContext";
-import React from "react";
+import React, { useContext } from "react";
 
 import { FaCheck } from "react-icons/fa";
 
@@ -11,8 +12,18 @@ interface TodoItemProps {
 const descriptionLength: number = 40;
 
 function TaskItem({ task, toggleCompleted }: TodoItemProps) {
+  const { openModal, setTaskInfo } = useContext(ModalContext) || {
+    openModal: (type: modalTypes) => {},
+    setTaskInfo: (task: Task) => {},
+  };
   return (
-    <div className={`task-item-wrapper ${task.completed ? "completed" : ""}`}>
+    <div
+      className={`task-item-wrapper ${task.completed ? "completed" : ""}`}
+      onClick={() => {
+        openModal("edit");
+        setTaskInfo(task);
+      }}
+    >
       <div className="main-wrapper">
         <div className="left">
           <div className="title">{task.title}</div>
@@ -25,7 +36,13 @@ function TaskItem({ task, toggleCompleted }: TodoItemProps) {
           )}
         </div>
         <div className="right">
-          <div className={`radio-btn`} onClick={() => toggleCompleted(task.id)}>
+          <div
+            className={`radio-btn`}
+            onClick={(e) => {
+              toggleCompleted(task.id);
+              e.stopPropagation();
+            }}
+          >
             {task.completed ? <FaCheck /> : ""}
           </div>
         </div>
