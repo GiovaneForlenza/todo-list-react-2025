@@ -1,5 +1,4 @@
-import { Task, TasksContext } from "@/contexts/TasksContext";
-import { useContext, useEffect, useState } from "react";
+import { Task } from "@/contexts/TasksContext";
 
 export const LOCAL_STORAGE_KEYS = {
   TASKS: "tasks",
@@ -48,11 +47,8 @@ export function getFilterCount(filter: string): number {
   try {
     let filterCounter = window.localStorage.getItem(filter);
     return filterCounter ? parseInt(filterCounter) : 0;
-    
-  } catch (error) {
-    
-  }
-  return 0
+  } catch (error) {}
+  return 0;
 }
 
 export function increaseFilterCount(filter: string) {
@@ -86,7 +82,7 @@ export function getTasksFromLocalStorage() {
   }
 }
 
-export function updateTasksInLocalStorage(updatedTasks:Task[]) {
+export function updateTasksInLocalStorage(updatedTasks: Task[]) {
   window.localStorage.setItem(
     LOCAL_STORAGE_KEYS.TASKS,
     JSON.stringify(updatedTasks)

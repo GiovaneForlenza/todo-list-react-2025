@@ -1,19 +1,19 @@
 import { ModalContext } from "@/contexts/ModalContext";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { IoIosClose } from "react-icons/io";
 
 interface ConfirmDeleteTaskModalProps {
- handleClickDelete: (
-  e: React.MouseEvent<HTMLButtonElement>,
-  taskId: number
- ) => void;
- setTaskTitle: (title: string) => void;
- setTaskDescription: (description: string) => void;
- taskTitle: string;
- // taskDescription: string;
- setConfirmDeletedSelected: (selected: boolean) => void;
- confirmDeleteSelected: boolean;
- updateTaskListAndCloseModal: () => void;
+  handleClickDelete: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    taskId: number
+  ) => void;
+  setTaskTitle: (title: string) => void;
+  setTaskDescription: (description: string) => void;
+  taskTitle: string;
+  // taskDescription: string;
+  setConfirmDeletedSelected: (selected: boolean) => void;
+  confirmDeleteSelected: boolean;
+  updateTaskListAndCloseModal: () => void;
 }
 
 function ConfirmDeleteTaskModal({

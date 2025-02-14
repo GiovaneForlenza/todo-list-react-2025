@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext} from "react";
 import TaskItem from "./TaskItem";
 import { TasksContext } from "@/contexts/TasksContext";
 
 function index() {
-  const { toggleCompleted = (id: number) => {}, tasks } =
+  const { toggleCompleted = () => {}, tasks } =
     useContext(TasksContext) || {};
 
   return (

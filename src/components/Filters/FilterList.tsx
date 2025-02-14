@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import FilterItem from "./FilterItem";
 import dynamic from "next/dynamic";
 import { FiltersContext } from "@/contexts/FiltersContext";

@@ -1,5 +1,5 @@
 import { ModalContext } from "@/contexts/ModalContext";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { IoIosClose } from "react-icons/io";
 
 interface EditTaskModalProps {

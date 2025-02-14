@@ -1,9 +1,9 @@
-import { ModalContext, modalTypes } from "@/contexts/ModalContext";
+import { ModalContext } from "@/contexts/ModalContext";
 import React, { useContext } from "react";
 
 function Header() {
   const { openModal } = useContext(ModalContext) || {
-    openModal: (type: modalTypes) => {},
+    openModal: () => {},
     
   };
   return (

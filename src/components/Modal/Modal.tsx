@@ -1,4 +1,6 @@
-import { ModalContext, modalTypes } from "@/contexts/ModalContext";
+import { useContext, useState } from "react";
+
+import { ModalContext } from "@/contexts/ModalContext";
 import { Task, TasksContext } from "@/contexts/TasksContext";
 import {
   addTaskToLocalStorage,
@@ -8,10 +10,8 @@ import {
   LOCAL_STORAGE_KEYS,
   updateTasksInLocalStorage,
 } from "@/utils/localStorage";
-import { useContext, useEffect, useId, useState } from "react";
 import AddTaskModal from "./AddTaskModal";
 import EditTaskModal from "./EditTaskModal";
-import { TbBasketUp } from "react-icons/tb";
 import ConfirmDeleteTaskModal from "./ConfirmDeletetaskModal";
 import { FiltersContext } from "@/contexts/FiltersContext";
 // v4();

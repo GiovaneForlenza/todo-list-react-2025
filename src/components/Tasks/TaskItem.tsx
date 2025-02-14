@@ -1,4 +1,4 @@
-import { ModalContext, modalTypes } from "@/contexts/ModalContext";
+import { ModalContext } from "@/contexts/ModalContext";
 import { Task } from "@/contexts/TasksContext";
 import React, { useContext } from "react";
 
@@ -13,8 +13,8 @@ const descriptionLength: number = 40;
 
 function TaskItem({ task, toggleCompleted }: TodoItemProps) {
   const { openModal, setTaskInfo } = useContext(ModalContext) || {
-    openModal: (type: modalTypes) => {},
-    setTaskInfo: (task: Task) => {},
+    openModal: () => {},
+    setTaskInfo: () => {},
   };
   return (
     <div
