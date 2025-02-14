@@ -17,6 +17,7 @@ export type FilterItemType = {
 export interface FiltersContextProps {
   filters: FilterItemType[];
   setFilters: React.Dispatch<React.SetStateAction<FilterItemType[]>>;
+  updateFiltersCounter: () => void;
 }
 export const FiltersContext = createContext<FiltersContextProps | null>(null);
 
@@ -88,6 +89,7 @@ export const FiltersProvider: React.FC<FiltersProviderProps> = ({
       value={{
         filters,
         setFilters,
+        updateFiltersCounter,
       }}
     >
       {children}
