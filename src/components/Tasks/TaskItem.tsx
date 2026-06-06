@@ -6,24 +6,13 @@ import { FaCheck } from "react-icons/fa";
 
 interface TodoItemProps {
   task: Task;
-  toggleCompleted: (id: number) => void;
 }
 
 const descriptionLength: number = 40;
 
-function TaskItem({ task, toggleCompleted }: TodoItemProps) {
-  const { openModal, setTaskInfo } = useContext(ModalContext) || {
-    openModal: () => {},
-    setTaskInfo: () => {},
-  };
+function TaskItem({ task }: TodoItemProps) {
   return (
-    <div
-      className={`task-item-wrapper ${task.completed ? "completed" : ""}`}
-      onClick={() => {
-        openModal("edit");
-        setTaskInfo(task);
-      }}
-    >
+    <div className={`task-item-wrapper ${task.completed ? "completed" : ""}`}>
       <div className="main-wrapper">
         <div className="left">
           <div className="title">{task.title}</div>
@@ -39,7 +28,6 @@ function TaskItem({ task, toggleCompleted }: TodoItemProps) {
           <div
             className={`radio-btn`}
             onClick={(e) => {
-              toggleCompleted(task.id);
               e.stopPropagation();
             }}
           >

@@ -47,6 +47,8 @@ const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     });
     setTasks(updatedTasks);
     updateTasksInLocalStorage(updatedTasks);
+    // console.log(updatedTasks);
+    // alert(id);
   }
 
   function updateTaskList() {
@@ -55,7 +57,6 @@ const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   function updateDisplayedTaskList(filter: string) {
     updateTaskList();
-    console.log(filter);
 
     if (filter === "All") {
       setTasks(getTasksFromLocalStorage());
@@ -69,15 +70,14 @@ const TasksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         } else if (filter === "Incomplete") {
           if (!task.completed) return task;
         }
-      }
+      },
     );
-    console.log(displayedTaskList);
 
     setTasks(displayedTaskList);
   }
+
   useEffect(() => {
     let tasksFromLocalStorage = getTasksFromLocalStorage();
-
     setTasks(tasksFromLocalStorage);
   }, []);
 

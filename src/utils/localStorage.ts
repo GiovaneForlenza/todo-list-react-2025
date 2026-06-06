@@ -23,20 +23,20 @@ export function addTaskToLocalStorage(value: Task) {
     if (!getFilterCount(LOCAL_STORAGE_KEYS.COMPLETED_TASKS))
       window.localStorage.setItem(
         LOCAL_STORAGE_KEYS.COMPLETED_TASKS,
-        JSON.stringify(0)
+        JSON.stringify(0),
       );
 
     window.localStorage.setItem(
       LOCAL_STORAGE_KEYS.TASKS,
-      JSON.stringify(returnedTasks)
+      JSON.stringify(returnedTasks),
     );
     window.localStorage.setItem(
       LOCAL_STORAGE_KEYS.INCOMPLETE_TASKS,
-      JSON.stringify(incomplete_tasks + 1)
+      JSON.stringify(incomplete_tasks + 1),
     );
     window.localStorage.setItem(
       LOCAL_STORAGE_KEYS.TOTAL_OF_TASKS,
-      JSON.stringify(totalOfTasks + 1)
+      JSON.stringify(totalOfTasks + 1),
     );
   } catch (error) {
     console.log(error);
@@ -51,7 +51,17 @@ export function getFilterCount(filter: string): number {
   return 0;
 }
 
+function updateFilterCount() {
+  let incomplete = localStorage.getItem(LOCAL_STORAGE_KEYS.INCOMPLETE_TASKS);
+
+  let complete = localStorage.getItem(LOCAL_STORAGE_KEYS.COMPLETED_TASKS);
+
+  let total = localStorage.getItem(LOCAL_STORAGE_KEYS.TOTAL_OF_TASKS);
+  console.log("COUNT", incomplete, complete, total);
+}
+
 export function increaseFilterCount(filter: string) {
+  updateFilterCount();
   let filterCount = getFilterCount(filter);
   if (!filterCount) filterCount = 0;
   window.localStorage.setItem(filter, JSON.stringify(filterCount + 1));
@@ -85,7 +95,7 @@ export function getTasksFromLocalStorage() {
 export function updateTasksInLocalStorage(updatedTasks: Task[]) {
   window.localStorage.setItem(
     LOCAL_STORAGE_KEYS.TASKS,
-    JSON.stringify(updatedTasks)
+    JSON.stringify(updatedTasks),
   );
 }
 

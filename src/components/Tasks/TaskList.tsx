@@ -1,18 +1,15 @@
-import React, { useContext} from "react";
+import React, { useContext } from "react";
 import TaskItem from "./TaskItem";
 import { TasksContext } from "@/contexts/TasksContext";
 
 function index() {
-  const { toggleCompleted = () => {}, tasks } =
-    useContext(TasksContext) || {};
+  const { tasks } = useContext(TasksContext) || {};
 
   return (
     <div className="task-list-wrapper">
       {tasks && tasks.length !== 0 ? (
         tasks.map((task, id) => {
-          return (
-            <TaskItem key={id} task={task} toggleCompleted={toggleCompleted} />
-          );
+          return <TaskItem key={id} task={task} />;
         })
       ) : (
         <div className="no-tasks-wrapper">

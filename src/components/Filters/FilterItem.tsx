@@ -18,25 +18,25 @@ function FilterItem({ item }: FilterItemProps) {
   if (!tasksContext) {
     return null; // or handle the null case appropriately
   }
-  const { updateDisplayedTaskList } = tasksContext;
+  // const { updateDisplayedTaskList } = tasksContext;
 
-  function handleClick(itemId: number) {
-    const updatedFilters = filters.map((filter) => {
-      if (filter.id === itemId) {
-        return { ...filter, selected: true };
-      }
-      return { ...filter, selected: false };
-    });
-    setFilters(updatedFilters);
-    updateDisplayedTaskList(item.text);
-  }
+  // function handleClick(itemId: number) {
+  //   const updatedFilters = filters.map((filter) => {
+  //     if (filter.id === itemId) {
+  //       return { ...filter, selected: true };
+  //     }
+  //     return { ...filter, selected: false };
+  //   });
+  //   setFilters(updatedFilters);
+  //   updateDisplayedTaskList(item.text);
+  // }
   return (
     <div
       className={`filter-item-wrapper ${
         item.selected ? "selected" : "not-selected"
       }`}
       onClick={() => {
-        handleClick(item.id);
+        // handleClick(item.id);
       }}
     >
       <div className="text">{item.text}</div>

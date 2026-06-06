@@ -5,9 +5,7 @@ import FilterItem from "./FilterItem";
 import dynamic from "next/dynamic";
 import { FiltersContext } from "@/contexts/FiltersContext";
 
-
 function FilterList() {
-
   const context = useContext(FiltersContext);
   if (!context) {
     return null; // or handle the null case appropriately
@@ -16,6 +14,7 @@ function FilterList() {
 
   return (
     <div className="filter-list-wrapper">
+      a
       {filters.map((filter) => (
         <FilterItem key={filter.id} item={filter} />
       ))}
